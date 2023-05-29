@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genesys Cloud Enhanced Analytics</title>
+  <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
+  <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.6.3/purecloud-client-app-sdk-de77761d.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="startGCSDKs.js"></script>
+  <script src="downloadCSV.js"></script>
+  <script src="draw.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <h1 id="title">Genesys Cloud Enhanced Analytics</h1>
+  <h2>Static link Id</h2>
+  <label for="downloadId">Download ID: </label>
+  <input type="text" id="downloadId" name="downloadId"><br>
+  <button id="saveButton">Save</button>
+  <script>
+    const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
+    let platformClient;
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      startGCSDKs(clientId).then((client) => {
+        platformClient = client;
+      });
+
+      document.getElementById('saveButton').addEventListener('click', function() {
+        let downloadId = document.getElementById('downloadId').value;
+        if(platformClient && downloadId) {
+          downloadCSV(downloadId);
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
