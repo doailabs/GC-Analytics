@@ -34,6 +34,7 @@
   <script>
     const clientId = 'a6265673-e275-4520-93fe-4247e115d3b6';
     let platformClient;
+    let ApiError = 'You must specify a search interval as part of your query that does not exceed 7 days';
     
     document.addEventListener('DOMContentLoaded', function () {
       startGCSDKs(clientId).then((client) => {
@@ -46,7 +47,7 @@
         let endDate = new Date(document.getElementById('endDate').value);
         if(platformClient && startDate && endDate) {
           if ((endDate - startDate) / (1000*60*60*24) >= maxDays) {
-            document.getElementById('error').innerText = 'You must specify a search interval as part of your query that does not exceed 7 days';
+            document.getElementById('error').innerText = ApiError;
           } else {
             getAnalytics(startDate.toISOString(), endDate.toISOString())
               .then(tables => {                
