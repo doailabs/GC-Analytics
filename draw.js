@@ -41,7 +41,6 @@ function calculateStats(dataArray) {
   };
 }
 
-
 function draw(tables, groupingField) {
   // Merge all tables into a single array
   let allData = [].concat.apply([], Object.values(tables).filter(Array.isArray));
