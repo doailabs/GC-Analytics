@@ -1,7 +1,3 @@
-// Include the Dragula library
-const dragula = require('dragula');
-
-// This function generates a basic HTML table from a given data array
 function generateTable(dataArray, tableId) {
   const table = document.createElement('table');
   table.setAttribute('id', tableId);
