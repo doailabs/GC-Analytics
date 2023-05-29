@@ -1,41 +1,70 @@
 function generateTable(dataArray, tableId) {
   const table = document.createElement('table');
   table.setAttribute('id', tableId);
-  
+
   dataArray.forEach((item, i) => {
     const tr = document.createElement('tr');
     tr.setAttribute('id', `row-${i}`);
-    for (const key in item) {
+    Object.values(item).forEach(val => {
       const td = document.createElement('td');
-      td.textContent = item[key];
+      td.textContent = val;
       tr.appendChild(td);
-    }
+    });
     table.appendChild(tr);
   });
 
   return table;
 }
 
-// This function initializes the Dragula library on a given container
-function enableDragAndDrop(containerId) {
-  const container = document.getElementById(containerId);
-  const drake = dragula([container]);
-  
-  drake.on('drop', function(el, target, source, sibling) {
-    // You can add logic here to handle the drop event, such as updating your data array
+function calculateStats(dataArray) {
+  let counts = {};
+  let sums = {};
+  let averages = {};
+
+  dataArray.forEach(item => {
+    for (let key in item) {
+      // Only perform operations on number fields
+      if (typeof item[key] === 'number') {
+        if (!counts[key]) counts[key] = 0;
+        if (!sums[key]) sums[key] = 0;
+        counts[key]++;
+        sums[key] += item[key];
+        averages[key] = sums[key] / counts[key];
+      }
+    }
   });
+
+  return {
+    'Count': counts,
+    'Sum': sums,
+    'Avg': averages
+  };
 }
 
-// The main draw function, which generates a table and enables drag and drop
-function draw(data) {
-  for (const tableName in data) {
-    const containerId = `${tableName}Container`;
-    const tableId = `${tableName}Table`;
-    const container = document.createElement('div');
-    container.setAttribute('id', containerId);
-    const table = generateTable(data[tableName], tableId);
-    container.appendChild(table);
-    document.body.appendChild(container);
-    enableDragAndDrop(containerId);
+
+function draw(tables, groupingField) {
+  // Merge all tables into a single array
+  let allData = [].concat.apply([], Object.values(tables).filter(Array.isArray));
+  // Group the data by the selected field
+  let groupedData = allData.reduce((groups, item) => {
+    let group = item[groupingField];
+    if (!groups[group]) {
+      groups[group] = [];
+    }
+    groups[group].push(item);
+    return groups;
+  }, {});
+
+  // Calculate the stats for each group
+  let stats = {};
+  for (let group in groupedData) {
+    stats[group] = calculateStats(groupedData[group]);
+  }
+
+  // Generate a table for each group
+  for (let group in stats) {
+    let tableId = `${group}Table`;
+    let table = generateTable(stats[group], tableId);
+    document.body.appendChild(table);
   }
 }
