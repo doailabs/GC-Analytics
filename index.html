@@ -14,10 +14,14 @@
 
 <body>
   <h1 id="title">Genesys Cloud Enhanced Analytics</h1>
-  <h2>Static link Id</h2>
-  <label for="downloadId">Download ID: </label>
-  <input type="text" id="downloadId" name="downloadId"><br>
-  <button id="saveButton">Save</button>
+  <section>
+    <h2>Date selection</h2>
+    <label for="startDate">Start date: </label>
+    <input type="date" id="startDate" name="startDate"><br>
+    <label for="endDate">End date: </label>
+    <input type="date" id="endDate" name="endDate"><br>
+    <button id="saveButton">Save</button>
+  </section>
   <script>
     const clientId = 'a6265673-e275-4520-93fe-4247e115d3b6';
     let platformClient;
@@ -28,12 +32,13 @@
       });
 
       document.getElementById('saveButton').addEventListener('click', function() {
-        let downloadId = document.getElementById('downloadId').value;
-        if(platformClient && downloadId) {
-          getAnalytics(downloadId);
+        let startDate = document.getElementById('startDate').value;
+        let endDate = document.getElementById('endDate').value;
+        if(platformClient && startDate && endDate) {
+          getAnalytics(startDate,endDate);
         }
       });
     });
   </script>
 </body>
-</html> 
+</html>
