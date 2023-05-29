@@ -27,7 +27,7 @@
     <button id="saveButton">Save</button>
     <p id="error" style="color: red;"></p>
   </section>
-<section id="groupingSection">
+<section id="groupingSection" style="display: none;">
   <h2>Grouping selection</h2>
   <!-- The select and the button will be created here by JavaScript -->
 </section>
@@ -77,6 +77,8 @@
                 groupingSection.appendChild(label);
                 groupingSection.appendChild(groupingSelect);
                 groupingSection.appendChild(groupingSaveButton);
+                groupingSection.style.display = 'block';
+              
                 draw(tables);
               });
           }
