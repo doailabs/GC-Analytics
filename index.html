@@ -34,17 +34,20 @@
         platformClient = client;
       });
 
-      document.getElementById('saveButton').addEventListener('click', function() {
-        let startDate = document.getElementById('startDate').value;
-        let endDate = document.getElementById('endDate').value;
-        if(platformClient && downloadId && startDate && endDate) {
-          if ((endDate - startDate) / (1000*60*60*24) >= 7) {
-            document.getElementById('error').innerText = 'You must specify a search interval as part of your query that does not exceed 7 days';
-          } else {
-            getAnalytics(startDate.toISOString(), endDate.toISOString());
-          }
+    document.getElementById('saveButton').addEventListener('click', function() {
+      let startDate = document.getElementById('startDate').value;
+      let endDate = document.getElementById('endDate').value;
+      if(platformClient && startDate && endDate) {
+        if ((endDate - startDate) / (1000*60*60*24) >= 7) {
+          document.getElementById('error').innerText = 'You must specify a search interval as part of your query that does not exceed 7 days';
+        } else {
+          getAnalytics(startDate.toISOString(), endDate.toISOString())
+            .then(tables => {
+              // Cuando getAnalytics se ha resuelto, llama a la función draw
+              draw(tables);
+            });
         }
-      });
+      }
     });
   </script>
 </body>
