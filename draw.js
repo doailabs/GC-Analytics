@@ -52,17 +52,19 @@ function calculateStats(dataArray) {
 }
 
 function draw(tables, groupingField) {
-  // Merge all tables into a single array
-  let allData = [].concat.apply([], Object.values(tables).filter(Array.isArray));
   // Group the data by the selected field
-  let groupedData = allData.reduce((groups, item) => {
-    let group = item[groupingField];
-    if (!groups[group]) {
-      groups[group] = [];
+  let groupedData = {};
+  for (let tableName in tables) {
+    if (Array.isArray(tables[tableName])) {
+      tables[tableName].forEach(item => {
+        let group = item[groupingField];
+        if (!groupedData[group]) {
+          groupedData[group] = [];
+        }
+        groupedData[group].push(item);
+      });
     }
-    groups[group].push(item);
-    return groups;
-  }, {});
+  }
 
   // Calculate the stats for each group
   let stats = {};
