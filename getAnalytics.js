@@ -30,28 +30,48 @@ function getAnalytics(startDate, endDate) {
           // Add the conversation data to the conversations table
           conversationsTable.push(conversation);
 
-          // Process the data for each participant in the conversation
-          for (let participant of conversation.participants) {
-            // Add the participant data to the participants table
-            participantsTable.push(participant);
+          // Check if conversation.participants is iterable
+          if (conversation.participants && typeof conversation.participants[Symbol.iterator] === 'function') {
+            // Process the data for each participant in the conversation
+            for (let participant of conversation.participants) {
+              // Add the participant data to the participants table
+              participantsTable.push(participant);
 
-            // Process the data for each session in the participant
-            for (let session of participant.sessions) {
-              // Add the session data to the sessions table
-              sessionsTable.push(session);
+              // Check if participant.sessions is iterable
+              if (participant.sessions && typeof participant.sessions[Symbol.iterator] === 'function') {
+                // Process the data for each session in the participant
+                for (let session of participant.sessions) {
+                  // Add the session data to the sessions table
+                  sessionsTable.push(session);
 
-              // Process the data for each segment in the session
-              for (let segment of session.segments) {
-                // Add the segment data to the segments table
-                segmentsTable.push(segment);
+                  // Check if session.segments is iterable
+                  if (session.segments && typeof session.segments[Symbol.iterator] === 'function') {
+                    // Process the data for each segment in the session
+                    for (let segment of session.segments) {
+                      // Add the segment data to the segments table
+                      segmentsTable.push(segment);
+                    }
+                  } else {
+                    console.error("session.segments is not iterable");
+                  }
+                }
+              } else {
+                console.error("participant.sessions is not iterable");
+              }
+
+              // Check if participant.metrics is iterable
+              if (participant.metrics && typeof participant.metrics[Symbol.iterator] === 'function') {
+                // Process the data for each metric in the participant
+                for (let metric of participant.metrics) {
+                  // Add the metric data to the metrics table
+                  metricsTable.push(metric);
+                }
+              } else {
+                console.error("participant.metrics is not iterable");
               }
             }
-
-            // Process the data for each metric in the participant
-            for (let metric of participant.metrics) {
-              // Add the metric data to the metrics table
-              metricsTable.push(metric);
-            }
+          } else {
+            console.error("conversation.participants is not iterable");
           }
         }
       } else {
