@@ -23,6 +23,10 @@ function getAnalytics(startDate, endDate) {
       let segmentsTable = [];
       let metricsTable = [];
 
+      // conversationId links the conversations and participants tables
+      // participantId links the participants and sessions tables
+      // sessionId links the sessions, segments, and metrics tables
+    
       // Check if data.conversations is iterable
       if (data.conversations && typeof data.conversations[Symbol.iterator] === 'function') {
         // Process the data for each conversation
