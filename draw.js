@@ -1,17 +1,27 @@
-function generateTable(dataArray, tableId) {
+function generateTable(dataObject, tableId) {
   const table = document.createElement('table');
   table.setAttribute('id', tableId);
 
-  dataArray.forEach((item, i) => {
+  // Create the headers
+  const headers = document.createElement('tr');
+  ['Field', 'Count', 'Sum', 'Avg'].forEach(headerText => {
+    const th = document.createElement('th');
+    th.textContent = headerText;
+    headers.appendChild(th);
+  });
+  table.appendChild(headers);
+
+  // Create a row for each field
+  for (let key in dataObject.Count) {
     const tr = document.createElement('tr');
-    tr.setAttribute('id', `row-${i}`);
-    Object.values(item).forEach(val => {
+    tr.setAttribute('id', `row-${key}`);
+    ['Count', 'Sum', 'Avg'].forEach(statType => {
       const td = document.createElement('td');
-      td.textContent = val;
+      td.textContent = dataObject[statType][key];
       tr.appendChild(td);
     });
     table.appendChild(tr);
-  });
+  }
 
   return table;
 }
