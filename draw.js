@@ -1,54 +1,36 @@
-function generateTable(dataObject, tableId) {
-  const table = document.createElement('table');
-  table.setAttribute('id', tableId);
-
-  // Create the headers
-  const headers = document.createElement('tr');
-  ['Field', 'Count', 'Sum', 'Avg'].forEach(headerText => {
-    const th = document.createElement('th');
-    th.textContent = headerText;
-    headers.appendChild(th);
-  });
-  table.appendChild(headers);
-
-  // Create a row for each field
-  for (let key in dataObject.Count) {
-    const tr = document.createElement('tr');
-    tr.setAttribute('id', `row-${key}`);
-    ['Count', 'Sum', 'Avg'].forEach(statType => {
-      const td = document.createElement('td');
-      td.textContent = dataObject[statType][key];
-      tr.appendChild(td);
-    });
-    table.appendChild(tr);
-  }
-
-  return table;
-}
-
-function calculateStats(dataArray) {
+function calculateStats(dataArray, isMetricsTable = false) {
   let counts = {};
-  let sums = {};
+  let countsNumerics = {};
   let averages = {};
 
   dataArray.forEach(item => {
     for (let key in item) {
-      // Only perform operations on number fields
-      if (typeof item[key] === 'number') {
-        if (!counts[key]) counts[key] = 0;
-        if (!sums[key]) sums[key] = 0;
-        counts[key]++;
-        sums[key] += item[key];
-        averages[key] = sums[key] / counts[key];
+      // Handle differently for metrics table
+      if (isMetricsTable && key === 'name') {
+        if (!counts[item[key]]) counts[item[key]] = 0;
+        counts[item[key]]++;
+        if (!countsNumerics[item[key]]) countsNumerics[item[key]] = 0;
+        countsNumerics[item[key]] += item['value'];
+        if (!averages[item[key]]) averages[item[key]] = 0;
+        averages[item[key]] = countsNumerics[item[key]] / counts[item[key]];
+      } else if (typeof item[key] === 'number') {
+        // Only perform operations on number fields
+        let countKey = `Count${key}`;
+        let avgKey = `Avg${key}`;
+        if (!counts[countKey]) counts[countKey] = 0;
+        if (!countsNumerics[key]) countsNumerics[key] = 0;
+        counts[countKey]++;
+        countsNumerics[key] += item[key];
+        if (!averages[avgKey]) averages[avgKey] = 0;
+        averages[avgKey] = countsNumerics[key] / counts[countKey];
       }
     }
   });
 
-  return {
-    'Count': counts,
-    'Sum': sums,
-    'Avg': averages
-  };
+  // Merge all result objects
+  let results = {...counts, ...averages};
+
+  return results;
 }
 
 function draw(tables, groupingField) {
@@ -69,7 +51,8 @@ function draw(tables, groupingField) {
   // Calculate the stats for each group
   let stats = {};
   for (let group in groupedData) {
-    stats[group] = calculateStats(groupedData[group]);
+    let isMetricsTable = group === 'metrics';
+    stats[group] = calculateStats(groupedData[group], isMetricsTable);
   }
 
   // Generate a table for each group
@@ -78,4 +61,29 @@ function draw(tables, groupingField) {
     let table = generateTable(stats[group], tableId);
     document.body.appendChild(table);
   }
+}
+
+function generateTable(dataObject, tableId) {
+  const table = document.createElement('table');
+  table.setAttribute('id', tableId);
+
+  // Create the headers
+  const headers = document.createElement('tr');
+  for (let key in dataObject) {
+    const th = document.createElement('th');
+    th.textContent = key;
+    headers.appendChild(th);
+  }
+  table.appendChild(headers);
+
+  // Create a row for the data
+  const tr = document.createElement('tr');
+  for (let key in dataObject) {
+    const td = document.createElement('td');
+    td.textContent = dataObject[key];
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+
+  return table;
 }
