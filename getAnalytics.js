@@ -10,8 +10,8 @@ function getAnalytics(startDate, endDate) {
     "interval": `${startDate}/${endDate}`
   };
 
-  // Call the postAnalyticsConversationsDetailsQuery method on the API instance
-  apiInstance.postAnalyticsConversationsDetailsQuery(body)
+  // Return the promise
+  return apiInstance.postAnalyticsConversationsDetailsQuery(body)
     .then((data) => {
       // Log the success message if the request was successful
       console.log(`postAnalyticsConversationsDetailsQuery success! data: ${JSON.stringify(data, null, 2)}`);
@@ -93,7 +93,6 @@ function getAnalytics(startDate, endDate) {
       } else {
         console.warn("Warning: data.conversations is not iterable or is not an array. Skipping.");
       }
-
       // Return the tables
       return {
         'conversations': conversationsTable,
@@ -102,7 +101,6 @@ function getAnalytics(startDate, endDate) {
         'segments': segmentsTable,
         'metrics': metricsTable
       };
-
     })
     .catch((err) => {
       // Log the error message if the request failed
