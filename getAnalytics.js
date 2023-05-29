@@ -27,15 +27,15 @@ function getAnalytics(startDate, endDate) {
       // participantId links the participants and sessions tables
       // sessionId links the sessions, segments, and metrics tables
     
-      // Check if data.conversations is iterable
-      if (data.conversations && typeof data.conversations[Symbol.iterator] === 'function') {
+      // Check if data.conversations is iterable and an array
+      if (data.conversations && Array.isArray(data.conversations)) {
         // Process the data for each conversation
         for (let conversation of data.conversations) {
           // Add the conversation data to the conversations table
           conversationsTable.push(conversation);
 
-          // Check if conversation.participants is iterable
-          if (conversation.participants && typeof conversation.participants[Symbol.iterator] === 'function') {
+          // Check if conversation.participants is iterable and an array
+          if (conversation.participants && Array.isArray(conversation.participants)) {
             // Process the data for each participant in the conversation
             for (let participant of conversation.participants) {
               // Add the conversationId to the participant data
@@ -44,8 +44,8 @@ function getAnalytics(startDate, endDate) {
               // Add the participant data to the participants table
               participantsTable.push(participant);
 
-              // Check if participant.sessions is iterable
-              if (participant.sessions && typeof participant.sessions[Symbol.iterator] === 'function') {
+              // Check if participant.sessions is iterable and an array
+              if (participant.sessions && Array.isArray(participant.sessions)) {
                 // Process the data for each session in the participant
                 for (let session of participant.sessions) {
                   // Add the participantId to the session data
@@ -54,8 +54,8 @@ function getAnalytics(startDate, endDate) {
                   // Add the session data to the sessions table
                   sessionsTable.push(session);
 
-                  // Check if session.segments is iterable
-                  if (session.segments && typeof session.segments[Symbol.iterator] === 'function') {
+                  // Check if session.segments is iterable and an array
+                  if (session.segments && Array.isArray(session.segments)) {
                     // Process the data for each segment in the session
                     for (let segment of session.segments) {
                       // Add the sessionId to the segment data
@@ -65,15 +65,15 @@ function getAnalytics(startDate, endDate) {
                       segmentsTable.push(segment);
                     }
                   } else {
-                    console.error("session.segments is not iterable");
+                    console.warn("Warning: session.segments is not iterable or is not an array. Skipping.");
                   }
                 }
               } else {
-                console.error("participant.sessions is not iterable");
+                console.warn("Warning: participant.sessions is not iterable or is not an array. Skipping.");
               }
 
-              // Check if participant.metrics is iterable
-              if (participant.metrics && typeof participant.metrics[Symbol.iterator] === 'function') {
+              // Check if participant.metrics is iterable and an array
+              if (participant.metrics && Array.isArray(participant.metrics)) {
                 // Process the data for each metric in the participant
                 for (let metric of participant.metrics) {
                   // Add the participantId to the metric data
@@ -83,15 +83,15 @@ function getAnalytics(startDate, endDate) {
                   metricsTable.push(metric);
                 }
               } else {
-                console.error("participant.metrics is not iterable");
+                console.warn("Warning: participant.metrics is not iterable or is not an array. Skipping.");
               }
             }
           } else {
-            console.error("conversation.participants is not iterable");
+            console.warn("Warning: conversation.participants is not iterable or is not an array. Skipping.");
           }
         }
       } else {
-        console.error("data.conversations is not iterable");
+        console.warn("Warning: data.conversations is not iterable or is not an array. Skipping.");
       }
 
       // Return the tables
