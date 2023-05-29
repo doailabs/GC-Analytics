@@ -15,7 +15,9 @@ function getAnalytics(startDate, endDate) {
     .then((data) => {
       // Log the success message if the request was successful
       console.log(`postAnalyticsConversationsDetailsQuery success! data: ${JSON.stringify(data, null, 2)}`);
-
+      
+      let columnNames = new Set();
+    
       // Initialize the tables
       let conversationsTable = [];
       let participantsTable = [];
@@ -33,11 +35,13 @@ function getAnalytics(startDate, endDate) {
         for (let conversation of data.conversations) {
           // Add the conversation data to the conversations table
           conversationsTable.push(conversation);
+          Object.keys(conversation).forEach(key => columnNames.add(key));
 
           // Check if conversation.participants is iterable and an array
           if (conversation.participants && Array.isArray(conversation.participants)) {
             // Process the data for each participant in the conversation
             for (let participant of conversation.participants) {
+              Object.keys(participant).forEach(key => columnNames.add(key));
               // Add the conversationId to the participant data
               participant.conversationId = conversation.conversationId;
 
@@ -48,6 +52,7 @@ function getAnalytics(startDate, endDate) {
               if (participant.sessions && Array.isArray(participant.sessions)) {
                 // Process the data for each session in the participant
                 for (let session of participant.sessions) {
+                  Object.keys(session).forEach(key => columnNames.add(key));
                   // Add the participantId to the session data
                   session.participantId = participant.participantId;
 
@@ -58,6 +63,7 @@ function getAnalytics(startDate, endDate) {
                   if (session.segments && Array.isArray(session.segments)) {
                     // Process the data for each segment in the session
                     for (let segment of session.segments) {
+                      Object.keys(segment).forEach(key => columnNames.add(key));
                       // Add the sessionId to the segment data
                       segment.sessionId = session.sessionId;
 
@@ -76,6 +82,7 @@ function getAnalytics(startDate, endDate) {
               if (participant.metrics && Array.isArray(participant.metrics)) {
                 // Process the data for each metric in the participant
                 for (let metric of participant.metrics) {
+                  Object.keys(metric).forEach(key => columnNames.add(key));
                   // Add the participantId to the metric data
                   metric.participantId = participant.participantId;
 
@@ -99,7 +106,8 @@ function getAnalytics(startDate, endDate) {
         'participants': participantsTable,
         'sessions': sessionsTable,
         'segments': segmentsTable,
-        'metrics': metricsTable
+        'metrics': metricsTable,
+        'columnNames': Array.from(columnNames)
       };
     })
     .catch((err) => {
