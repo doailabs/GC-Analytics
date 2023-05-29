@@ -38,6 +38,9 @@ function getAnalytics(startDate, endDate) {
           if (conversation.participants && typeof conversation.participants[Symbol.iterator] === 'function') {
             // Process the data for each participant in the conversation
             for (let participant of conversation.participants) {
+              // Add the conversationId to the participant data
+              participant.conversationId = conversation.conversationId;
+
               // Add the participant data to the participants table
               participantsTable.push(participant);
 
@@ -45,6 +48,9 @@ function getAnalytics(startDate, endDate) {
               if (participant.sessions && typeof participant.sessions[Symbol.iterator] === 'function') {
                 // Process the data for each session in the participant
                 for (let session of participant.sessions) {
+                  // Add the participantId to the session data
+                  session.participantId = participant.participantId;
+
                   // Add the session data to the sessions table
                   sessionsTable.push(session);
 
@@ -52,6 +58,9 @@ function getAnalytics(startDate, endDate) {
                   if (session.segments && typeof session.segments[Symbol.iterator] === 'function') {
                     // Process the data for each segment in the session
                     for (let segment of session.segments) {
+                      // Add the sessionId to the segment data
+                      segment.sessionId = session.sessionId;
+
                       // Add the segment data to the segments table
                       segmentsTable.push(segment);
                     }
@@ -67,6 +76,9 @@ function getAnalytics(startDate, endDate) {
               if (participant.metrics && typeof participant.metrics[Symbol.iterator] === 'function') {
                 // Process the data for each metric in the participant
                 for (let metric of participant.metrics) {
+                  // Add the participantId to the metric data
+                  metric.participantId = participant.participantId;
+
                   // Add the metric data to the metrics table
                   metricsTable.push(metric);
                 }
