@@ -43,7 +43,6 @@
         } else {
           getAnalytics(startDate.toISOString(), endDate.toISOString())
             .then(tables => {
-              // Cuando getAnalytics se ha resuelto, llama a la función draw
               draw(tables);
             });
         }
