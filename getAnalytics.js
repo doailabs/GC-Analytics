@@ -23,12 +23,12 @@ function getAnalytics(startDate, endDate) {
       let segmentsTable = [];
       let metricsTable = [];
 
-      // Check if data.conversationsDetails is iterable
-      if (data.conversationsDetails && typeof data.conversationsDetails[Symbol.iterator] === 'function') {
+      // Check if data.conversations is iterable
+      if (data.conversations && typeof data.conversations[Symbol.iterator] === 'function') {
         // Process the data for each conversation
-        for (let conversation of data.conversationsDetails) {
+        for (let conversation of data.conversations) {
           // Add the conversation data to the conversations table
-          conversationsTable.push(conversation.conversation);
+          conversationsTable.push(conversation);
 
           // Process the data for each participant in the conversation
           for (let participant of conversation.participants) {
@@ -55,7 +55,7 @@ function getAnalytics(startDate, endDate) {
           }
         }
       } else {
-        console.error("data.conversationsDetails is not iterable");
+        console.error("data.conversations is not iterable");
       }
 
       // Return the tables
