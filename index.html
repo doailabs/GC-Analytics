@@ -27,6 +27,11 @@
     <button id="saveButton">Save</button>
     <p id="error" style="color: red;"></p>
   </section>
+  <section>
+    <h2>Group By Column</h2>
+    <label for="groupColumn">Group by: </label>
+    <select id="groupColumn"></select>
+  </section>
   <script>
     const clientId = 'a6265673-e275-4520-93fe-4247e115d3b6';
     let platformClient;
@@ -46,6 +51,13 @@
           } else {
             getAnalytics(startDate.toISOString(), endDate.toISOString())
               .then(tables => {
+                const groupColumnElement = document.getElementById('groupColumn');
+                Object.keys(tables.conversations[0]).forEach(key => {
+                  const optionElement = document.createElement('option');
+                  optionElement.value = key;
+                  optionElement.textContent = key;
+                  groupColumnElement.appendChild(optionElement);
+                });
                 draw(tables);
               });
           }
