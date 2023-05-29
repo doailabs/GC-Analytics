@@ -28,12 +28,14 @@ function enableDragAndDrop(containerId) {
 
 // The main draw function, which generates a table and enables drag and drop
 function draw(data) {
-  const containerId = 'analyticsContainer';
-  const tableId = 'analyticsTable';
-  const container = document.createElement('div');
-  container.setAttribute('id', containerId);
-  const table = generateTable(data, tableId);
-  container.appendChild(table);
-  document.body.appendChild(container);
-  enableDragAndDrop(containerId);
+  for (const tableName in data) {
+    const containerId = `${tableName}Container`;
+    const tableId = `${tableName}Table`;
+    const container = document.createElement('div');
+    container.setAttribute('id', containerId);
+    const table = generateTable(data[tableName], tableId);
+    container.appendChild(table);
+    document.body.appendChild(container);
+    enableDragAndDrop(containerId);
+  }
 }
