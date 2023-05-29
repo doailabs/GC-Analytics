@@ -1,0 +1,150 @@
+/* Reset básico de navegador */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Cabecera */
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1.2rem;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background-color: #000;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+header a:hover {
+  text-decoration: none;
+  background-color: #111;
+}
+
+/* Navegación */
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #444;
+  padding: 0.75rem;
+}
+
+nav ul {
+  display: flex;
+}
+
+nav ul li {
+  list-style-type: none;
+}
+
+nav ul li a {
+  display: block;
+  padding: 0 0.5rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+nav ul li a:hover {
+  background-color: #555;
+}
+
+/* Secciones */
+section {
+  background-color: #fff;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+/* Campos de texto y desplegables */
+input[type="text"],
+select {
+  display: inline-block;
+  width: auto;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  min-width: 150px;
+}
+
+/* Tabla de knowledge bases */
+table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+/* Botones */
+button {
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #111;
+  transform: scale(1.05);
+}
+
+#title {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
