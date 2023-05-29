@@ -60,9 +60,9 @@
                 label.textContent = 'Group by: ';
 
                 // Create the button
-                let saveButton = document.createElement('button');
-                saveButton.id = 'saveButton';
-                saveButton.textContent = 'Save';
+                let groupingSaveButton = document.createElement('button');
+                groupingSaveButton.id = 'groupingSaveButton';
+                groupingSaveButton.textContent = 'Save';
 
                 // Populate the dropdown with the column names
                 for (let columnName of tables.columnNames) {
@@ -76,7 +76,7 @@
                 let groupingSection = document.getElementById('groupingSection');
                 groupingSection.appendChild(label);
                 groupingSection.appendChild(groupingSelect);
-                groupingSection.appendChild(saveButton);
+                groupingSection.appendChild(groupingSaveButton);
                 draw(tables);
               });
           }
