@@ -5,7 +5,6 @@ function generateTable(dataArray, tableId) {
   dataArray.forEach((item, i) => {
     const tr = document.createElement('tr');
     tr.setAttribute('id', `row-${i}`);
-    tr.setAttribute('draggable', 'true');
     for (const key in item) {
       const td = document.createElement('td');
       td.textContent = item[key];
@@ -17,9 +16,9 @@ function generateTable(dataArray, tableId) {
   return table;
 }
 
-// This function initializes the Dragula library on a given table
-function enableDragAndDrop(tableId) {
-  const container = document.getElementById(tableId);
+// This function initializes the Dragula library on a given container
+function enableDragAndDrop(containerId) {
+  const container = document.getElementById(containerId);
   const drake = dragula([container]);
   
   drake.on('drop', function(el, target, source, sibling) {
@@ -29,9 +28,12 @@ function enableDragAndDrop(tableId) {
 
 // The main draw function, which generates a table and enables drag and drop
 function draw(data) {
+  const containerId = 'analyticsContainer';
   const tableId = 'analyticsTable';
+  const container = document.createElement('div');
+  container.setAttribute('id', containerId);
   const table = generateTable(data, tableId);
-  document.body.appendChild(table);
-  enableDragAndDrop(tableId);
+  container.appendChild(table);
+  document.body.appendChild(container);
+  enableDragAndDrop(containerId);
 }
-
