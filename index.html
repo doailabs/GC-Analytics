@@ -50,7 +50,8 @@
             document.getElementById('error').innerText = ApiError;
           } else {
             getAnalytics(startDate.toISOString(), endDate.toISOString())
-              .then(tables => {                
+              .then(tables => {
+                let columnNames = getColumnNames(tables);
                 // Create the select element
                 let groupingSelect = document.createElement('select');
                 groupingSelect.id = 'groupingSelect';
@@ -82,7 +83,11 @@
               
                 document.getElementById('groupingSaveButton').addEventListener('click', function() {
                   let groupingField = document.getElementById('groupingSelect').value;
-                  draw(tables, groupingField);
+                  // Get the tables again because they might have changed since we first got them
+                  getAnalytics(startDate.toISOString(), endDate.toISOString())
+                    .then(tables => {
+                      draw(tables, groupingField);
+                    });
                 });
               });
           }
