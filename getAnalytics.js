@@ -78,9 +78,12 @@ function getAnalytics(startDate, endDate) {
                 for (let metric of participant.metrics) {
                   // Add the participantId to the metric data
                   metric.participantId = participant.participantId;
-
+                  // Change the structure of metrics data
+                  let metricData = {};
+                  metricData[metric.name] = metric.value;
+                  metricData.participantId = participant.participantId;
                   // Add the metric data to the metrics table
-                  metricsTable.push(metric);
+                  metricsTable.push(metricData);
                 }
               } else {
                 console.warn("Warning: participant.metrics is not iterable or is not an array. Skipping.");
