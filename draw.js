@@ -1,31 +1,27 @@
-function calculateStats(dataArray, isMetricsTable = false) {
+function calculateStats(dataArray) {
   let counts = {};
-  let countsNumerics = {};
-  let averages = {};
+  let sums = {};
 
   dataArray.forEach(item => {
     for (let key in item) {
-      // Handle differently for metrics table
-      if (isMetricsTable && key === 'name') {
-        if (!counts[item[key]]) counts[item[key]] = 0;
-        counts[item[key]]++;
-        if (!countsNumerics[item[key]]) countsNumerics[item[key]] = 0;
-        countsNumerics[item[key]] += item['value'];
-        if (!averages[item[key]]) averages[item[key]] = 0;
-        averages[item[key]] = countsNumerics[item[key]] / counts[item[key]];
-      } else if (typeof item[key] === 'number') {
-        // Only perform operations on number fields
+      if (typeof item[key] === 'number') {
+        // Perform operations on numeric fields
         let countKey = `Count${key}`;
-        let avgKey = `Avg${key}`;
+        let sumKey = `Sum${key}`;
         if (!counts[countKey]) counts[countKey] = 0;
-        if (!countsNumerics[key]) countsNumerics[key] = 0;
+        if (!sums[sumKey]) sums[sumKey] = 0;
         counts[countKey]++;
-        countsNumerics[key] += item[key];
-        if (!averages[avgKey]) averages[avgKey] = 0;
-        averages[avgKey] = countsNumerics[key] / counts[countKey];
+        sums[sumKey] += item[key];
       }
     }
   });
+
+  // Calculate averages based on counts and sums
+  let averages = {};
+  for (let key in counts) {
+    let avgKey = `Avg${key.substring(5)}`;  // Remove 'Count' from the start of the key
+    averages[avgKey] = sums[`Sum${key.substring(5)}`] / counts[key];
+  }
 
   // Merge all result objects
   let results = {...counts, ...averages};
