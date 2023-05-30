@@ -80,7 +80,10 @@
                 groupingSection.appendChild(groupingSaveButton);
                 groupingSection.style.display = 'block';
               
-                draw(tables);
+                document.getElementById('groupingSaveButton').addEventListener('click', function() {
+                  let groupingField = document.getElementById('groupingSelect').value;
+                  draw(tables, groupingField);
+                });
               });
           }
         }
