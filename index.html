@@ -85,7 +85,7 @@
                 document.getElementById('groupingSaveButton').addEventListener('click', function() {
                   let groupingField = document.getElementById('groupingSelect').value;
                   // Get the tables again because they might have changed since we first got them
-                  getAnalytics(startDate.toISOString(), endDate.toISOString())
+                  getAnalytics(startDate.toISOString(), endDate.toISOString(), groupByField, platformClient)
                     .then(tables => {
                       draw(tables, groupingField);
                     });
