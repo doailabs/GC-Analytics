@@ -43,57 +43,56 @@
       });
 
       document.getElementById('saveButton').addEventListener('click', function() {
-        let maxDays = 7;
-        let startDate = new Date(document.getElementById('startDate').value);
-        let endDate = new Date(document.getElementById('endDate').value);
-        if(platformClient && startDate && endDate) {
-          if ((endDate - startDate) / (1000*60*60*24) >= maxDays) {
-            document.getElementById('error').innerText = ApiError;
-          } else {
-            let groupingField = document.getElementById('groupingSelect').value;
-            getAnalytics(startDate.toISOString(), endDate.toISOString(), groupingField, platformClient)
-              .then(tables => {
-                let columnNames = getColumnNames(tables);
-                // Create the select element
-                let groupingSelect = document.createElement('select');
-                groupingSelect.id = 'groupingSelect';
-
-                // Create the label for the select
-                let label = document.createElement('label');
-                label.for = 'groupingSelect';
-                label.textContent = 'Group by: ';
-
-                // Create the button
-                let groupingSaveButton = document.createElement('button');
-                groupingSaveButton.id = 'groupingSaveButton';
-                groupingSaveButton.textContent = 'Save';
-
-                // Populate the dropdown with the column names
-                for (let columnName of columnNames) {
-                  let optionElement = document.createElement('option');
-                  optionElement.value = columnName;
-                  optionElement.textContent = columnName;
-                  groupingSelect.appendChild(optionElement);
-                }
-
-                // Append the label, the select, and the button to the section, and display the section
-                let groupingSection = document.getElementById('groupingSection');
-                groupingSection.appendChild(label);
-                groupingSection.appendChild(groupingSelect);
-                groupingSection.appendChild(groupingSaveButton);
-                groupingSection.style.display = 'block';
-              
-                document.getElementById('groupingSaveButton').addEventListener('click', function() {
-                  let groupingField = document.getElementById('groupingSelect').value;
-                  // Get the tables again because they might have changed since we first got them
+          let maxDays = 7;
+          let startDate = new Date(document.getElementById('startDate').value);
+          let endDate = new Date(document.getElementById('endDate').value);
+          if(platformClient && startDate && endDate) {
+              if ((endDate - startDate) / (1000*60*60*24) >= maxDays) {
+                  document.getElementById('error').innerText = ApiError;
+              } else {
                   getAnalytics(startDate.toISOString(), endDate.toISOString(), groupingField, platformClient)
-                    .then(tables => {
-                      draw(tables, groupingField);
-                    });
-                });
-              });
+                      .then(tables => {
+                          let columnNames = getColumnNames(tables);
+                          // Create the select element
+                          let groupingSelect = document.createElement('select');
+                          groupingSelect.id = 'groupingSelect';
+      
+                          // Create the label for the select
+                          let label = document.createElement('label');
+                          label.for = 'groupingSelect';
+                          label.textContent = 'Group by: ';
+      
+                          // Create the button
+                          let groupingSaveButton = document.createElement('button');
+                          groupingSaveButton.id = 'groupingSaveButton';
+                          groupingSaveButton.textContent = 'Save';
+      
+                          // Populate the dropdown with the column names
+                          for (let columnName of columnNames) {
+                              let optionElement = document.createElement('option');
+                              optionElement.value = columnName;
+                              optionElement.textContent = columnName;
+                              groupingSelect.appendChild(optionElement);
+                          }
+      
+                          // Append the label, the select, and the button to the section, and display the section
+                          let groupingSection = document.getElementById('groupingSection');
+                          groupingSection.appendChild(label);
+                          groupingSection.appendChild(groupingSelect);
+                          groupingSection.appendChild(groupingSaveButton);
+                          groupingSection.style.display = 'block';
+      
+                          document.getElementById('groupingSaveButton').addEventListener('click', function() {
+                              let groupingField = document.getElementById('groupingSelect').value;
+                              // Get the tables again because they might have changed since we first got them
+                              getAnalytics(startDate.toISOString(), endDate.toISOString(), groupingField, platformClient)
+                                  .then(tables => {
+                                      draw(tables, groupingField);
+                                  });
+                          });
+                      });
+              }
           }
-        }
       });
     }); 
   </script>
