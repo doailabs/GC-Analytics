@@ -1,6 +1,6 @@
-let apiInstance = new platformClient.ConversationsApi();
-
-function getAnalytics(startDate, endDate, groupByField) {
+function getAnalytics(startDate, endDate, groupByField, platformClient) {
+  let apiInstance = new platformClient.ConversationsApi();
+  
   let interval = `${startDate}/${endDate}`;
   let opts = {
     'interval': interval,
