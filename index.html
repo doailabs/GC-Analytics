@@ -40,7 +40,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       startGCSDKs(clientId).then((client) => {
         platformClient = client;
-    
+
         document.getElementById('saveButton').addEventListener('click', function() {
           let maxDays = 7;
           let startDate = new Date(document.getElementById('startDate').value);
@@ -55,17 +55,17 @@
                       // Create the select element
                       let groupingSelect = document.createElement('select');
                       groupingSelect.id = 'groupingSelect';
-    
+
                       // Create the label for the select
                       let label = document.createElement('label');
                       label.for = 'groupingSelect';
                       label.textContent = 'Group by: ';
-    
+
                       // Create the button
                       let groupingSaveButton = document.createElement('button');
                       groupingSaveButton.id = 'groupingSaveButton';
                       groupingSaveButton.textContent = 'Save';
-    
+
                       // Populate the dropdown with the column names
                       for (let columnName of columnNames) {
                         let optionElement = document.createElement('option');
@@ -73,14 +73,14 @@
                         optionElement.textContent = columnName;
                         groupingSelect.appendChild(optionElement);
                       }
-    
+
                       // Append the label, the select, and the button to the section, and display the section
                       let groupingSection = document.getElementById('groupingSection');
                       groupingSection.appendChild(label);
                       groupingSection.appendChild(groupingSelect);
                       groupingSection.appendChild(groupingSaveButton);
                       groupingSection.style.display = 'block';
-    
+
                       document.getElementById('groupingSaveButton').addEventListener('click', function() {
                         let groupingField = document.getElementById('groupingSelect').value;
                         // Get the tables again because they might have changed since we first got them
@@ -94,7 +94,7 @@
           }
         });
       });
-    });
+    }); 
   </script>
 </body>
 
