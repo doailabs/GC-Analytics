@@ -1,4 +1,3 @@
-const platformClient = require('platformClient');
 let apiInstance = new platformClient.ConversationsApi();
 
 function getAnalytics(startDate, endDate, groupByField) {
