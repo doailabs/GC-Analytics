@@ -50,7 +50,7 @@
               if ((endDate - startDate) / (1000*60*60*24) >= maxDays) {
                   document.getElementById('error').innerText = ApiError;
               } else {
-                  getAnalytics(startDate.toISOString(), endDate.toISOString(), groupingField, platformClient)
+                  getAnalytics(startDate.toISOString(), endDate.toISOString(), platformClient)
                       .then(tables => {
                           let columnNames = getColumnNames(tables);
                           // Create the select element
