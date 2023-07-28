@@ -1,3 +1,19 @@
+function drawStats(groupedData, groupByField) {
+  // Clear previous results
+  clearResults();
+
+  for (let group in groupedData) {
+    let dataArray = groupedData[group];
+    let stats = calculateStats(dataArray);
+    displayStats(group, groupByField, stats);
+  }
+}
+
+function clearResults() {
+  // Clear previous results
+  document.getElementById('results').innerHTML = '';
+}
+
 function calculateStats(dataArray) {
   let counts = {};
   let sums = {};
@@ -5,81 +21,32 @@ function calculateStats(dataArray) {
   dataArray.forEach(item => {
     for (let key in item) {
       if (typeof item[key] === 'number') {
-        // Perform operations on numeric fields
-        let countKey = `Count${key}`;
-        let sumKey = `Sum${key}`;
-        if (!counts[countKey]) counts[countKey] = 0;
-        if (!sums[sumKey]) sums[sumKey] = 0;
-        counts[countKey]++;
-        sums[sumKey] += item[key];
+        if (!counts[key]) counts[key] = 0;
+        if (!sums[key]) sums[key] = 0;
+
+        counts[key]++;
+        sums[key] += item[key];
       }
     }
   });
 
-  // Calculate averages based on counts and sums
-  let averages = {};
+  let avgs = {};
   for (let key in counts) {
-    let avgKey = `Avg${key.substring(5)}`;  // Remove 'Count' from the start of the key
-    averages[avgKey] = sums[`Sum${key.substring(5)}`] / counts[key];
+    avgs[key] = sums[key] / counts[key];
   }
 
-  // Merge all result objects
-  let results = {...counts, ...averages};
-
-  return results;
+  return {counts: counts, avgs: avgs};
 }
 
-function draw(tables, groupingField) {
-  // Group the data by the selected field
-  let groupedData = {};
-  for (let tableName in tables) {
-    if (Array.isArray(tables[tableName])) {
-      tables[tableName].forEach(item => {
-        let group = item[groupingField];
-        if (!groupedData[group]) {
-          groupedData[group] = [];
-        }
-        groupedData[group].push(item);
-      });
-    }
-  }
+function displayStats(group, groupByField, stats) {
+  let resultsDiv = document.getElementById('results');
 
-  // Calculate the stats for each group
-  let stats = {};
-  for (let group in groupedData) {
-    let isMetricsTable = group === 'metrics';
-    stats[group] = calculateStats(groupedData[group], isMetricsTable);
-  }
+  let groupDiv = document.createElement('div');
+  groupDiv.textContent = `${groupByField}: ${group}`;
 
-  // Generate a table for each group
-  for (let group in stats) {
-    let tableId = `${group}Table`;
-    let table = generateTable(stats[group], tableId);
-    document.body.appendChild(table);
-  }
-}
+  let statsDiv = document.createElement('div');
+  statsDiv.textContent = JSON.stringify(stats, null, 2);
 
-function generateTable(dataObject, tableId) {
-  const table = document.createElement('table');
-  table.setAttribute('id', tableId);
-
-  // Create the headers
-  const headers = document.createElement('tr');
-  for (let key in dataObject) {
-    const th = document.createElement('th');
-    th.textContent = key;
-    headers.appendChild(th);
-  }
-  table.appendChild(headers);
-
-  // Create a row for the data
-  const tr = document.createElement('tr');
-  for (let key in dataObject) {
-    const td = document.createElement('td');
-    td.textContent = dataObject[key];
-    tr.appendChild(td);
-  }
-  table.appendChild(tr);
-
-  return table;
+  resultsDiv.appendChild(groupDiv);
+  resultsDiv.appendChild(statsDiv);
 }
