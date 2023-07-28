@@ -27,10 +27,10 @@
     <button id="saveButton">Save</button>
     <p id="error" style="color: red;"></p>
   </section>
-<section id="groupingSection" style="display: none;">
-  <h2>Grouping selection</h2>
-  <!-- The select and the button will be created here by JavaScript -->
-</section>
+  <section id="groupingSection" style="display: none;">
+    <h2>Grouping selection</h2>
+    <!-- The select and the button will be created here by JavaScript -->
+  </section>
   <div id="results"></div>
   <script>
     const clientId = 'a6265673-e275-4520-93fe-4247e115d3b6';
@@ -50,7 +50,8 @@
           if ((endDate - startDate) / (1000*60*60*24) >= maxDays) {
             document.getElementById('error').innerText = ApiError;
           } else {
-            getAnalytics(startDate.toISOString(), endDate.toISOString(), groupByField, platformClient)
+            let groupingField = document.getElementById('groupingSelect').value;
+            getAnalytics(startDate.toISOString(), endDate.toISOString(), groupingField, platformClient)
               .then(tables => {
                 let columnNames = getColumnNames(tables);
                 // Create the select element
@@ -85,7 +86,7 @@
                 document.getElementById('groupingSaveButton').addEventListener('click', function() {
                   let groupingField = document.getElementById('groupingSelect').value;
                   // Get the tables again because they might have changed since we first got them
-                  getAnalytics(startDate.toISOString(), endDate.toISOString(), groupByField, platformClient)
+                  getAnalytics(startDate.toISOString(), endDate.toISOString(), groupingField, platformClient)
                     .then(tables => {
                       draw(tables, groupingField);
                     });
@@ -97,4 +98,5 @@
     }); 
   </script>
 </body>
+
 </html>
